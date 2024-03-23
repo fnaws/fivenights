@@ -90,10 +90,87 @@
             </div>
         </div>
     </div>
-
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script>
-        var graphs = {{ graphJSON|safe }};
-        var layout = {{ layoutJSON|safe }};
+        //var graphs = {{ graphJSON|safe }};
+        //var layout = {{ layoutJSON|safe }};
+        //let x_data_arr = {{ x_data|safe }};
+        let y_data_arr = {{ y_data|safe }};
+        let data_size = y_data_arr.length;
+        //console.log(x_data_arr);
+        console.log(data_size);
+        //console.log(y_data_arr);
+
+        // Create initial chart 1 for company 1
+        const chart1 = Highcharts.chart('plotly-div', {
+            chart: {
+                type: 'line'
+            },
+            xAxis: {
+                min: 0,
+                max: data_size
+            },
+            series: [{
+                data: []
+            }]
+        });
+
+        // Create initial chart 2 for company 2
+        const chart2 = Highcharts.chart('plotly-div2', {
+            chart: {
+                type: 'line'
+            },
+            xAxis: {
+                min: 0,
+                max: data_size
+            },
+            series: [{
+                data: []
+            }]
+        });
+
+        // Create initial chart 3 for company 3
+        const chart3 = Highcharts.chart('plotly-div3', {
+            chart: {
+                type: 'line'
+            },
+            xAxis: {
+                min: 0,
+                max: data_size
+            },
+            series: [{
+                data: []
+            }]
+        });
+
+        // Function to update all stock charts at every interval
+        let idx = 0
+        const interval = setInterval(() => {
+            // Add the next data point to the chart1
+            if (idx < data_size) {
+                chart1.series[0].addPoint(y_data_arr[idx]);
+            } else {
+                clearInterval(interval); // Stop generating data after set number of points
+            }
+
+            // Add the next data point to the chart2
+            if (idx < data_size) {
+                chart2.series[0].addPoint(y_data_arr[idx]);
+            } else {
+                clearInterval(interval); // Stop generating data after set number of points
+            }
+            idx++;
+
+            // Add the next data point to the chart3
+            if (idx < data_size) {
+                chart3.series[0].addPoint(y_data_arr[idx]);
+            } else {
+                clearInterval(interval); // Stop generating data after set number of points
+            }
+        }, 500);
+
+        /*
         layout.staticPlot = true;  // Making the plot static (non-interactive)
         
         // Updating layout for axis titles
@@ -106,6 +183,7 @@
         Plotly.newPlot('plotly-div', graphs, layout, {displayModeBar: false});
         Plotly.newPlot('plotly-div2', graphs, layout, {displayModeBar: false});
         Plotly.newPlot('plotly-div3', graphs, layout, {displayModeBar: false});
+        */
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
