@@ -1,33 +1,14 @@
+import threading
+import requests
+import os
+
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.backend_bases import Event
  
-from dotenv import load_dotenv
-from datetime import datetime
-import pandas as pd
-
-import threading
-import requests
-import os
-
-
-
-load_dotenv()
-
-class Market:
-    import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from matplotlib.backend_bases import Event
- 
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import pandas as pd
-
-import threading
-import requests
-import os
-
-
+from dotenv import load_dotenv
 
 load_dotenv()
 
