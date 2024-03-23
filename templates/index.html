@@ -14,10 +14,14 @@
 <body class="bg-gray-200 bg-opacity-75">
 
     <div class="container mx-auto px-4">
-        <header class="text-center my-8 flex">
+        <header class="text-center my-8 flex justify-between">
             <div>
                 <h1 class="text-4xl font-bold">Five Nights at Wall Street</h1>
                 <h4 class="text-md">Welcome to the stock market! Buy and sell stocks to increase your wealth!</h4>
+            </div>
+            <div>
+                <h5 class="font-bold text-lg">Wallet: $<span id="wallet-amount">10000</span></h5>
+                <h5 class="font-bold text-lg">Net Gain: $<span id="net-gain">+0.0%</span></h5>
             </div>
             <div>
                 <div class="text-xl font-bold">Day n</div>
@@ -25,70 +29,71 @@
         </header>
 
         <div class="flex justify-between items-start mb-4">
-            <div class="w-2/3">
               
 
-                <!-- Stocks Buy/Sell section -->
-                <div id="stocks-container" class="space-y-4">
-                    <!-- Stock A -->
-                    <div class = "flex">
-                        <div class="stock bg-white shadow-lg rounded-lg p-4" id="stock-A">
-                            <div class = "flex">
-                                <h2 class="font-bold text-lg w-24">MSFT</h2>
-                                <h5 class="text-md">Shares: 0</h5>
+            <!-- Stocks Buy/Sell section -->
+            <div id="stocks-container" class="space-y-4">
+                <!-- Stock A -->
+                <div class = "flex justify-between mb-6">
+                    <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-A">
+                        <div class = "inline items-center justify-between">
+                            <div class = "flex flex-row ml-2 mt-4">
+                                <h2 class="font-bold text-lg w-24 mx-2">AAPL</h2>
+                                <h5 class="text-md mx-2">Shares: 0</h5>
                             </div>
-                            <span class="shares">$100.00</span>
-                            <div class="flex space-x-2 mt-3">
-                                <button class="btn btn--ripple2">Buy</button>
-                                <button class="btn btn--ripple">Sell</button>
-                                <input type="number" class="w-24 border border-gray-300 rounded-md p-1" placeholder="Shares">
-                                
+                            <!-- <span class="shares">$100.00</span> -->
+                            <br>
+                            <div class="flex align-center">
+                                <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
+                                <button class="btn btn--ripple2" id = "increase">Buy</button>
+                                <button class="btn btn--ripple"  id = "decrease">Sell</button>
                             </div>
                         </div>
                     </div>
-                    <!-- Stock B -->
-                    <div class="stock bg-white shadow-lg rounded-lg p-4" id="stock-B">
-                        <div class = "flex">
-                            <h2 class="font-bold text-lg w-24">TSLA</h2>
-                            <h5 class="text-md">Shares: 0</h5>
-                        </div>
-                        <span class="shares">$100.00</span>
-                        <div class="flex space-x-2 mt-3">
-                            <button class="btn btn--ripple2">Buy</button>
-                            <button class="btn btn--ripple">Sell</button>
-                           
-                        </div>
-                    </div>
-                    <!-- Stock C -->
-                    <div class="stock bg-white shadow-lg rounded-lg p-4" id="stock-C">
-                        <div class = "flex">
-                            <h2 class="font-bold text-lg w-24">AAPL</h2>
-                            <h5 class="text-md">Shares: 0</h5>
-                        </div>
-                        <span class="shares">$100.00</span>
-                        <div class="flex space-x-2 mt-3">
-                            <button class="btn btn--ripple2">Buy</button>
-                            <button class="btn btn--ripple">Sell</button>
-                            
-                        </div>
-                    </div>
+                    <div id="plotly-div" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
                 </div>
-                  <!-- Trading stocks and wallet info will go here -->
-                  <div class="flex justify-between mb-6">
-                    <div id="wallet-container" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
-                        <h5 class="font-bold text-lg">Wallet: $<span id="wallet-amount">10000</span></h5>
-                        <h5 class="font-bold text-lg">Net Gain: $<span id="net-gain">+0.0%</span></h5>
+                <!-- Stock B -->
+                <div class = "flex justify-between mb-6">
+                    <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-B">
+                        <div class = "inline items-center justify-between">
+                            <div class = "flex flex-row ml-2 mt-4">
+                                <h2 class="font-bold text-lg w-24 mx-2">TSLA</h2>
+                                <h5 class="text-md mx-2">Shares: 0</h5>
+                            </div>
+                            <!-- <span class="shares">$100.00</span> -->
+                            <br>
+                            <div class="flex align-center">
+                                <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
+                                <button class="btn btn--ripple2" id = "increase2">Buy</button>
+                                <button class="btn btn--ripple"  id = "decrease2">Sell</button>
+                            </div>
+                        </div>
                     </div>
+                    <div id="plotly-div2" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
+                </div>
+                <!-- Stock C -->
+                <div class = "flex justify-between mb-6">
+                    <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-C">
+                        <div class = "inline items-center justify-between">
+                            <div class = "flex flex-row ml-2 mt-4">
+                                <h2 class="font-bold text-lg w-24 mx-2">AAPL</h2>
+                                <h5 class="text-md mx-2">Shares: 0</h5>
+                            </div>
+                            <!-- <span class="shares">$100.00</span> -->
+                            <br>
+                            <div class="flex align-center">
+                                <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
+                                <button class="btn btn--ripple2" id = "increase3">Buy</button>
+                                <button class="btn btn--ripple"  id = "decrease3">Sell</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="plotly-div3" class="bg-white shadow-lg rounded-lg h-64"> <!-- Plotly chart will be inserted here --> </div>
                 </div>
             </div>
-
-            <!-- Graphs section -->
-            <div class="w-1/3 space-y-4">
-                <div id="plotly-div" class="bg-white shadow-lg rounded-lg h-64"> <!-- Plotly chart will be inserted here --> </div>
-                <div id="plotly-div2" class="bg-white shadow-lg rounded-lg h-64"> <!-- Plotly chart will be inserted here --> </div>
-                <div id="plotly-div3" class="bg-white shadow-lg rounded-lg h-64"> <!-- Plotly chart will be inserted here --> </div>
-            </div>
+       
         </div>
+
     </div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
@@ -179,6 +184,23 @@
                         tickmode: 'array',
                         tickvals: [1, 2, 3, 4, 5, 6, 7, 8],
                         ticktext: ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM']};
+
+        let graphs2 = {{ graphJSON2|safe }};
+        let layout2 = {{ layoutJSON2|safe }};
+        layout2.staticPlot = true;  // Making the plot static (non-interactive)
+        
+        // Updating layout for axis titles
+        layout2.xaxis = {title: 'Time of Day'};
+        layout2.yaxis = {title: 'Dollars Per Share', 
+                        tickmode: 'array',
+                        tickvals: [1, 2, 3, 4, 5, 6, 7, 8],
+                        ticktext: ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM']};
+
+        let graphs3 = {{ graphJSON3|safe }};
+        let layout3 = {{ layoutJSON3|safe }};
+        layout3.staticPlot = true;  // Making the plot static (non-interactive)
+
+
         
         Plotly.newPlot('plotly-div', graphs, layout, {displayModeBar: false});
         Plotly.newPlot('plotly-div2', graphs, layout, {displayModeBar: false});
