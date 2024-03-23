@@ -6,10 +6,22 @@ body {
 }
 
 #plotly-div {
-    width: 900px;
-    height: 600px;
-    margin-top: 20px; /* Add a top margin of 20 pixels */
-    margin-left: 30px; /* Add a left margin of 30 pixels */
+    width: 40rem;
+    height: 20rem;
+    margin-top: 20px;
+    margin-left: 30px; 
+}
+#plotly-div2 {
+    width: 40rem;
+    height: 20rem;
+    margin-top: 20px; 
+    margin-left: 30px;
+}
+#plotly-div3 {
+    width: 40rem;
+    height: 20rem;
+    margin-top: 20px;
+    margin-left: 30px; 
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
