@@ -34,28 +34,8 @@ def index():
             transformed_data = m.day_data(month_data=data)
         except:
             transformed_data = m.exception_handler()
-        # Transform the data to plot, x is the time, y is average of high and low
-        plotting_data = []
-        for index, row in data.iterrows():
-            plotting_data.append({
-                'x': index,
-                'y': np.mean([row['2. high'], row['3. low']])
-            })
-        x_data = [entry['x'] for entry in plotting_data]
-        y_data = [entry['y'] for entry in plotting_data]
 
-        big_data.append((symb, transformed_data))
-
-    raw_data = m.load_data(
-        function='TIME_SERIES_INTRADAY',
-        symbol='TSLA',  # Make this random
-        interval='1min',
-        month='2023-09',  # Make this random
-        outputsize='full',
-        extended_hours='false'
-    )
-    data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
-
+        big_data.append([symb, transformed_data])
 
     # for preloaded data (failsafe)
     # raw_data = m.load_data(
@@ -68,8 +48,6 @@ def index():
     # )
     # data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
 
-
-    # graphJSON = json.dumps(plotting_data, cls=plotly.utils.PlotlyJSONEncoder)
     shares = 0
     wallet = 10000.00
     net_gain = 0.00
