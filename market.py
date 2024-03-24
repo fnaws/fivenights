@@ -115,7 +115,7 @@ class Market:
             for entry in day:
                 timestamp = entry['Unnamed: 0'].split(" ")[1]
                 open_price = entry['1. open']
-                time_open.append([timestamp, open_price])
+                time_open.append(open_price)
             ret.append(time_open[::-1])
 
         # for el in ret[::-1]:
