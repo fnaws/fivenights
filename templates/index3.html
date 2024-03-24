@@ -128,7 +128,62 @@
             <br></br>
             <p>Remember, this simulation is a sprint, not a marathon. With only 30 seconds per day, quick thinking and decisive action are key. Can you outsmart the market and emerge wealthier?</p>
             <p>Good luck, trader!</p>
+
+            <div class="bg-gray-800 bg-opacity-90 text-gray-100 leading-7">
+                <span><h2>Difficulty: <h4 class="text-yellow-300" id ="difficulty-label">Medium</h4></h2></span>
+                <br></br>
+                <h3>Easy</h3>
+                <ul>
+                    <li>Stock prices fluctuate more slowly.</li>
+                </ul>
+                <br></br>
+                <h3>Medium</h3>
+                <ul>
+                    <li>Stock prices fluctuate more intensely.</li>
+                </ul>
+                <br></br>
+                <h3>Hard</h3>
+                <ul>
+                    <li>Stock prices fluctuate at astonishing speeds.</li>
+                </ul> 
+                <br></br>
+                <h3>Choose your difficulty:</h3>
+                <br>
+                <div class="flex align-center">
+                    <button class="btn bg-gradient-to-r from-green-500 to-green-700 hover:bg-green-300 text-white font-bold py-2 px-4 rounded" id = "easy">Easy</button>
+                    <button class="btn bg-gradient-to-r from-yellow-500 to-yellow-700 hover:bg-yellow-300 text-white font-bold py-2 px-4 rounded" id = "medium">Medium</button>
+                    <button class="btn bg-gradient-to-r from-red-500 to-red-700 hover:bg-red-300 text-white font-bold py-2 px-4 rounded" id = "hard">Hard</button>
+                </div>
+                <script>
+                     var difficulty = "medium"
+
+                    document.getElementById('easy').addEventListener('click', function() {
+                        difficulty = "easy";
+                        console.log(difficulty);
+                        document.getElementById("difficulty-label").textContent = "Easy";
+                        document.getElementById("difficulty-label").style.color = "green";
+                    });
+
+
+                    document.getElementById('medium').addEventListener('click', function() {
+                        difficulty = "medium";
+                        console.log(difficulty);
+                        document.getElementById("difficulty-label").textContent = "Medium";
+                        document.getElementById("difficulty-label").style.color = "yellow";
+                    });
+
+                    document.getElementById('hard').addEventListener('click', function() {
+                        difficulty = "hard";
+                        console.log(difficulty);
+                        document.getElementById("difficulty-label").textContent = "Hard";
+                        document.getElementById("difficulty-label").style.color = "red";
+                    });
+
+                </script>
+            </div>
         </div>
+       
+                
     </div>
     <div id = "gameOverModal" class = "justify-center align-middle self-center modal hidden">
         <div class="modal-content bg-gray-800 bg-opacity-90 text-gray-100 leading-7">
@@ -250,6 +305,9 @@
                 }
             });
 
+
+           
+
             // Update the chart at every interval
             let idx = 0
             const interval = setInterval(() => {
@@ -287,7 +345,8 @@
 
                 }
                 idx++;
-            }, 75); // Inteval length in ms. tweek to control the speed of the graph
+                 // Inteval length in ms. tweek to control the speed of the graph, based on difficulty: easy - 100, medium - 75, hard - 50
+            }, difficulty === "easy" ? 100 : difficulty === "hard" ? 50 : 75);
         }
 
         // run the graph for the first day
