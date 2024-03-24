@@ -122,6 +122,28 @@ class Market:
             ret.append(time_price[::-1])
 
         return ret[::-1]
+    
+    def exception_handler(self):
+        print('Entering exception handler')
+        # pick a folder from the data/stocks directory
+        symbols = os.listdir('data/stocks')
+        symbol = random.choice(symbols)
+        months = os.listdir(f'data/stocks/{symbol}')
+        month = random.choice(months)
+        try:
+            data = pd.read_csv(f'data/stocks/{symbol}/{month}')
+            print(f'Loaded data from {symbol}/{month}')
+        except:
+            print(f'Could not load data from {symbol}/{month}, trying TSLA/2023-09')
+            data = pd.read_csv(f'data/stocks/TSLA/2023-09.csv')
+        ret = self.day_data(data)
+        try:
+            # delete file to free up disk space
+            os.remove(f'data/stocks/{symbol}/{month}')
+            print(f'Deleted {symbol}/{month}')
+        except:
+            print(f'Could not delete {symbol}/{month}')
+        return ret
 
     def _view(self, data, display='day'):
         # Ensure data is a pandas DataFrame
