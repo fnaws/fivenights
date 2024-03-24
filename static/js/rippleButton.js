@@ -1,49 +1,27 @@
-//ripple btn for "Increase" button
-const increaseBtn = document.getElementById("increase");
-let ripplesIncrease = document.createElement("span");
-let cleartimeoutIncrease;
+// Function to create ripple effect
+function createRipple(button) {
+  button.addEventListener("mouseover", function (e) {
+    let x = e.clientX - e.target.offsetLeft;
+    let y = e.clientY - e.target.offsetTop;
+    let ripples = document.createElement("span");
+    ripples.style.left = x + "px";
+    ripples.style.top = y + "px";
+    this.appendChild(ripples);
 
-// Event listeners for "Increase" button
-increaseBtn.addEventListener("mouseover", function (e) {
-  let x = e.clientX - e.target.offsetLeft;
-  let y = e.clientY - e.target.offsetTop;
-  ripplesIncrease.style.left = x + "px";
-  ripplesIncrease.style.top = y + "px";
-  this.appendChild(ripplesIncrease);
+    setTimeout(() => {
+      ripples.remove();
+    }, 1000);
+  });
 
-  cleartimeoutIncrease = setTimeout(() => {
-    ripplesIncrease.remove();
-  }, 1000);
-});
+  button.addEventListener("mouseout", function (e) {
+    this.querySelectorAll('span').forEach(span => span.remove());
+  });
+}
 
-increaseBtn.addEventListener("mouseout", function () {
-  ripplesIncrease.remove(cleartimeoutIncrease);
-});
-
-//ripple btn for all "Decrease" button
-//ripple btn for all "Decrease" button
-let decreaseBtn = document.getElementById("decrease");
-let ripplesDecrease = document.createElement("span");
-let cleartimeoutDecrease;
-
-decreaseBtn.addEventListener("mouseover", function (e) {
-  let x = e.clientX - e.target.offsetLeft;
-  let y = e.clientY - e.target.offsetTop;
-  ripplesDecrease.style.left = x + "px";
-  ripplesDecrease.style.top = y + "px";
-  this.appendChild(ripplesDecrease);
-
-  // Clear the previous timeout, if any
-  clearTimeout(cleartimeoutDecrease);
-
-  cleartimeoutDecrease = setTimeout(() => {
-    ripplesDecrease.remove();
-  }, 4000);
-});
-
-decreaseBtn.addEventListener("mouseout", function () {
-  // Clear the timeout when the mouse re-enters the button
-  clearTimeout(cleartimeoutDecrease);
-  ripplesDecrease.remove();
-});
-
+// Apply ripple effect to each button
+createRipple(document.getElementById("increase"));
+createRipple(document.getElementById("decrease"));
+createRipple(document.getElementById("increase2"));
+createRipple(document.getElementById("decrease2"));
+createRipple(document.getElementById("increase3"));
+// Add more buttons if necessary

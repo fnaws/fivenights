@@ -51,7 +51,7 @@ def index():
     graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
     layoutJSON = json.dumps(layout, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template('index.html', graphJSON=graphJSON, layoutJSON=layoutJSON)
+    return render_template('index.html', graphJSON=graphJSON, layoutJSON=layoutJSON, x_data=x_data, y_data=y_data)
             
 if __name__ == '__main__':
     app.run(debug=True)
