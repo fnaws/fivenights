@@ -113,13 +113,9 @@ class Market:
         for day in five_days:
             time_price = []
             for entry in day:
-                timestamp = entry['Unnamed: 0'].split(" ")[1]
                 avg_price = (entry['2. high'] + entry['3. low']) / 2
                 time_price.append(avg_price)
             ret.append(time_price[::-1])
-
-        # for el in ret[::-1]:
-        #     print(el[:5])
 
         return ret[::-1]
 

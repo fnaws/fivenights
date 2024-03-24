@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from market import Market
+import simulator
 import plotly
 import plotly.graph_objs as go
 import json
@@ -13,28 +14,32 @@ m = Market()
 @app.route('/')
 def index():
     global m
-    # Get the data from the API
-    data = m.load_data(
-        function='TIME_SERIES_INTRADAY',
-        symbol='TSLA',
-        interval='1min',
-        month='2023-09',
-        outputsize='full',
-        extended_hours='false'
-    )
-    # transformed_data = m.day_data(month_data=data)
-    # print(transformed_data)
-    plotting_data = []
-    # Transform the data to plot, x is the time, y is average of high and low
-    for index, row in data.iterrows():
-        plotting_data.append({
-            'x': index,
-            'y': np.mean([row['2. high'], row['3. low']])
-        })
-    x_data = [entry['x'] for entry in plotting_data]
-    y_data = [entry['y'] for entry in plotting_data]
 
-    # for day in transformed_data:
+    big_data = []
+    # Get the data from the API
+
+    for symb in simulator.get_random():
+        data = m.load_data(
+            function='TIME_SERIES_INTRADAY',
+            symbol=symb,
+            interval='1min',
+            month='2023-09',
+            outputsize='full',
+            extended_hours='false'
+        )
+        transformed_data = m.day_data(month_data=data)
+        # Transform the data to plot, x is the time, y is average of high and low
+        plotting_data = []
+        for index, row in data.iterrows():
+            plotting_data.append({
+                'x': index,
+                'y': np.mean([row['2. high'], row['3. low']])
+            })
+        x_data = [entry['x'] for entry in plotting_data]
+        y_data = [entry['y'] for entry in plotting_data]
+
+        big_data.append((symb, y_data))
+
 
 
     # Create a Plotly line chart
