@@ -145,7 +145,7 @@ class Market:
             print(f'Could not delete {symbol}/{month}')
         '''
         
-        return month.split(".")[0], ret
+        return month.split(".")[0], ret, symbol
 
     def _view(self, data, display='day'):
         # Ensure data is a pandas DataFrame

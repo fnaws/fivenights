@@ -34,8 +34,9 @@ def index():
             )
             first_day, transformed_data = m.day_data(month_data=data)
         except:
-            first_day, transformed_data = m.exception_handler()
+            first_day, transformed_data, new_symb = m.exception_handler()
             first_day += "-01"
+            symb = new_symb
 
         big_data.append([symb, transformed_data])
 
@@ -62,7 +63,7 @@ def index():
         first_day = "\"could not fetch\""
     
 
-    return render_template('index.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain, first_day=first_day)
+    return render_template('index3.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain, first_day=first_day)
 
 @app.route('/buy', methods=['POST'])
 def buy():
