@@ -22,16 +22,18 @@ def index():
     month = simulator.random_date()
     print(symbs)
     for symb in symbs:
-        print(symb)
-        data = m.load_data(
-            function='TIME_SERIES_INTRADAY',
-            symbol=symb,
-            interval='1min',
-            month=month,
-            outputsize='full',
-            extended_hours='false'
-        )
-        transformed_data = m.day_data(month_data=data)
+        try:
+            data = m.load_data(
+                function='TIME_SERIES_INTRADAY',
+                symbol=symb,
+                interval='1min',
+                month=month,
+                outputsize='full',
+                extended_hours='false'
+            )
+            transformed_data = m.day_data(month_data=data)
+        except:
+            transformed_data = m.exception_handler()
         # Transform the data to plot, x is the time, y is average of high and low
         plotting_data = []
         for index, row in data.iterrows():
@@ -42,7 +44,7 @@ def index():
         x_data = [entry['x'] for entry in plotting_data]
         y_data = [entry['y'] for entry in plotting_data]
 
-        big_data.append((symb, y_data))
+        big_data.append((symb, transformed_data))
 
     raw_data = m.load_data(
         function='TIME_SERIES_INTRADAY',
