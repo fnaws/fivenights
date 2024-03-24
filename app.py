@@ -15,53 +15,54 @@ m = Market()
 def index():
     global m
 
-    big_data = []
-    # Get the data from the API
+    # big_data = []
+    # # Get the data from the API
 
-    for symb in simulator.get_random():
-        data = m.load_data(
-            function='TIME_SERIES_INTRADAY',
-            symbol=symb,
-            interval='1min',
-            month='2023-09',
-            outputsize='full',
-            extended_hours='false'
-        )
-        transformed_data = m.day_data(month_data=data)
-        # Transform the data to plot, x is the time, y is average of high and low
-        plotting_data = []
-        for index, row in data.iterrows():
-            plotting_data.append({
-                'x': index,
-                'y': np.mean([row['2. high'], row['3. low']])
-            })
-        x_data = [entry['x'] for entry in plotting_data]
-        y_data = [entry['y'] for entry in plotting_data]
+    # for symb in simulator.get_random():
+    #     data = m.load_data(
+    #         function='TIME_SERIES_INTRADAY',
+    #         symbol=symb,
+    #         interval='1min',
+    #         month='2023-09',
+    #         outputsize='full',
+    #         extended_hours='false'
+    #     )
+    #     transformed_data = m.day_data(month_data=data)
+    #     # Transform the data to plot, x is the time, y is average of high and low
+    #     plotting_data = []
+    #     for index, row in data.iterrows():
+    #         plotting_data.append({
+    #             'x': index,
+    #             'y': np.mean([row['2. high'], row['3. low']])
+    #         })
+    #     x_data = [entry['x'] for entry in plotting_data]
+    #     y_data = [entry['y'] for entry in plotting_data]
 
-        big_data.append((symb, y_data))
+    #     big_data.append((symb, y_data))
 
-
-
-    # Create a Plotly line chart
-    trace = go.Scatter(
-        x=x_data, 
-        y=y_data, 
-        mode='lines+markers', 
-        line=dict(width=6, color='blue'),  # Increased line thickness to 6
-        marker=dict(size=10)
+    raw_data = m.load_data(
+        function='TIME_SERIES_INTRADAY',
+        symbol='TSLA',  # Make this random
+        interval='1min',
+        month='2023-09',  # Make this random
+        outputsize='full',
+        extended_hours='false'
     )
-    layout = go.Layout(
-        paper_bgcolor='rgba(0,0,0,0)', 
-        plot_bgcolor='rgba(0,0,0,0)', 
-        xaxis=dict(showgrid=False), 
-        yaxis=dict(showgrid=False)
-    )
-    data = [trace]
+    data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
 
-    graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
-    layoutJSON = json.dumps(layout, cls=plotly.utils.PlotlyJSONEncoder)
+    # Initialize plotting data for 5 days
+    plotting_data = {'x': [], 'y': []}
+    for day_data in data:  # Assuming day_data is a list of open prices for the day
+        day_x_data = range(len(day_data))  # Generate a range object for x-axis (minutes)
+        day_y_data = day_data  # Y-axis data
+        
+        # Append day data to plotting data
+        plotting_data['x'].append(day_x_data)
+        plotting_data['y'].append(day_y_data)
 
-    return render_template('index.html', graphJSON=graphJSON, layoutJSON=layoutJSON, x_data=x_data, y_data=y_data)
+    # graphJSON = json.dumps(plotting_data, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('index.html', plotting_data=json.dumps(plotting_data))
             
 if __name__ == '__main__':
     app.run(debug=True)
