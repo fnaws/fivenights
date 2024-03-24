@@ -146,8 +146,8 @@
                 document.getElementById("net-gain-final").textContent = document.getElementById("net-gain").textContent;
             </script>
             <h3>Thank you for playing Five Nights at Wall Street!</h3>
-            <p>Want to play again?</p>
-            <a href="/" class="bg-gradient-to-r from-green-500 to-green-700 hover:bg-green-300 text-white font-bold py-2 px-4 rounded">Play Again</a>
+            <p class="mb-2">Want to play again?</p>
+            <a href="/" class="my-4 mx-2 bg-gradient-to-r from-green-500 to-green-700 hover:bg-green-300 text-white font-bold py-2 px-4 rounded">Play Again</a>
         </div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
@@ -291,7 +291,7 @@
         }
 
         // run the graph for the first day
-        document.getElementById('startGame').addEventListener('click', runGraph);
+        // document.getElementById('startGame').addEventListener('click', runGraph);
         
         // Function to switch to the next day and clear chart
         document.getElementById('switchDayButton').addEventListener('click', function() {
@@ -344,7 +344,9 @@
 
     <!-- Link to your custom JavaScript file -->
     <script>
+
         window.onload = function() {
+            
             // Show the modal on page load
             const modal = document.getElementById('instructionsModal');
             modal.classList.replace('hidden', 'show');
@@ -353,15 +355,25 @@
             const span = document.getElementsByClassName("close")[0];
         
             // When the user clicks on <span> (x), close the modal
+
             span.onclick = function() {
-                modal.classList.replace('show', 'hidden');
+                if (!modal.classList.contains('hidden')){
+                    modal.classList.replace('show', 'hidden');
+                    runGraph();
+                }
             }
         
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal)
-                    modal.classList.replace('show', 'hidden');
+            if (!modal.classList.contains('hidden')){
+                window.onclick = function(event) {
+                    if (event.target == modal && !modal.classList.contains('hidden')){
+                        modal.classList.replace('show', 'hidden');
+                        runGraph();
+                    }
+                }
+                
             }
+            
+
         }
     </script>
     <script>
@@ -371,12 +383,12 @@
         // modal.classList.replace('hidden', 'show');
 
         // Get the <span> element that closes the modal
-        const span2 = document.getElementsByClassName("close2")[0];
+        // const span2 = document.getElementsByClassName("close2")[0];
 
         // When the user clicks on <span> (x), close the modal
-        span2.onclick = function() {
-            modal2.classList.replace('show', 'hidden');
-        }
+        // span2.onclick = function() {
+        //     modal2.classList.replace('show', 'hidden');
+        // }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
@@ -385,7 +397,7 @@
         }
     
 
-    </script>
+    </script> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -434,9 +446,9 @@
                     }, // Data to be sent to the server
                     success: function(response) {
                         // Store the response in the shares display
-                        $('#wallet-amount').text(response.wallet);
+                        $('#wallet-amount').text(parseFloat(response.wallet).toFixed(2));
                         $('#shares-display1-amt').text(response.shares);
-                        $('#net-gain').text(response.net_gain);
+                        $('#net-gain').text(parseFloat(response.net_gain).toFixed(2));
                     },
                     error: function(xhr, status, error) {
                         if(xhr.status === 400) {  // Checking for the 400 Bad Request error

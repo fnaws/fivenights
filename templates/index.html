@@ -276,7 +276,7 @@
         }
 
         // run the graph for the first day
-        document.getElementById('startGame').addEventListener('click', runGraph);
+        // document.getElementById('startGame').addEventListener('click', runGraph);
         
         // Function to switch to the next day and clear chart
         document.getElementById('switchDayButton').addEventListener('click', function() {
@@ -340,16 +340,19 @@
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.classList.replace('show', 'hidden');
+                runGraph();
             }
         
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
-                if (event.target == modal)
+                if (event.target == modal){
                     modal.classList.replace('show', 'hidden');
+                }
+                runGraph();
             }
         }
     </script>
-    <script>
+    <!-- <script>
 
         // Show the modal on page load
         const modal2 = document.getElementById('gameOverModal');
@@ -370,7 +373,7 @@
         }
     
 
-    </script>
+    </script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
