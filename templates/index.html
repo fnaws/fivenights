@@ -143,6 +143,9 @@
                         text: '$ Per Share'
                     },
                 },
+                legend: {
+                    enabled: false
+                },
                 series: [{
                     data: []
                 }]
@@ -173,9 +176,10 @@
             if (currentDay < totalDays - 1) {
                 // update the day display
                 currentDay++;
-                
                 let displayDay = currentDay + 1;
                 document.getElementById("day-display").innerHTML = "Day " + displayDay.toString();
+
+        
                 document.getElementById('switchDayButton').disabled = true;
                 document.getElementById('switchDayButton').style.cursor = "not-allowed";
                 document.getElementById('switchDayButton').style.opacity = "0.5";
