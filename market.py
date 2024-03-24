@@ -1,33 +1,15 @@
+import threading
+import requests
+import os
+import random
+
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.backend_bases import Event
  
-from dotenv import load_dotenv
-from datetime import datetime
-import pandas as pd
-
-import threading
-import requests
-import os
-
-
-
-load_dotenv()
-
-class Market:
-    import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from matplotlib.backend_bases import Event
- 
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import pandas as pd
-
-import threading
-import requests
-import os
-
-
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -105,7 +87,41 @@ class Market:
             pass
             #print("Directories already exist or could not be created")
 
-        return df  
+        return df
+    
+    def day_data(self, month_data: pd.DataFrame):
+        '''Get the data for a single day from the month data'''
+        # convert dataframe into a list of dictionaries
+        data = month_data.to_dict(orient='records')
+        
+        # split the month into days
+        days = [[]]
+        for i in range(1, len(data)):
+            day = data[i]['Unnamed: 0'].split(" ")[0]
+            if day != data[i-1]['Unnamed: 0'].split(" ")[0]:
+                days.append([])
+            days[-1].append(data[i])
+
+
+        date_range = len(days)
+        
+        # randomly pick a day from the date range
+        rand = random.randint(0, date_range-6)
+        five_days = [day for day in days[rand:rand+5]]
+
+        ret = []
+        for day in five_days:
+            time_open = []
+            for entry in day:
+                timestamp = entry['Unnamed: 0'].split(" ")[1]
+                open_price = entry['1. open']
+                time_open.append([timestamp, open_price])
+            ret.append(time_open[::-1])
+
+        # for el in ret[::-1]:
+        #     print(el[:5])
+
+        return ret[::-1]
 
     def _view(self, data, display='day'):
         # Ensure data is a pandas DataFrame
