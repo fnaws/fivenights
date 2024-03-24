@@ -38,7 +38,7 @@
                     <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-A">
                         <div class = "inline items-center justify-between">
                             <div class = "flex flex-row ml-2 mt-4">
-                                <h2 class="font-bold text-lg w-24 mx-2">AAPL</h2>
+                                <h2 class="font-bold text-lg w-24 mx-2">MSFT</h2>
                                 <h5 class="text-md mx-2">Shares: 0</h5>
                                 <h5 class="text-md mx-2" id="price-display1">Price: 0$</h5>
                             </div>
@@ -53,7 +53,7 @@
                     </div>
                     <div id="plotly-div1" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
                 </div>
-                <!-- Stock B -->
+                <!-- Stock B 
                 <div class = "flex justify-between mb-6">
                     <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-B">
                         <div class = "inline items-center justify-between">
@@ -62,7 +62,6 @@
                                 <h5 class="text-md mx-2">Shares: 0</h5>
                                 <h5 class="text-md mx-2" id="price-display2">Price: 0$</h5>
                             </div>
-                            <!-- <span class="shares">$100.00</span> -->
                             <br>
                             <div class="flex align-center">
                                 <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
@@ -71,9 +70,9 @@
                             </div>
                         </div>
                     </div>
-                    <div id="plotly-div2" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
+                    <div id="plotly-div2" class="bg-white shadow-lg rounded-lg w-64 h-auto"> </div>
                 </div>
-                <!-- Stock C -->
+                Stock C 
                 <div class = "flex justify-between mb-6">
                     <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-C">
                         <div class = "inline items-center justify-between">
@@ -82,7 +81,6 @@
                                 <h5 class="text-md mx-2">Shares: 0</h5>
                                 <h5 class="text-md mx-2" id="price-display3">Price: 0$</h5>
                             </div>
-                            <!-- <span class="shares">$100.00</span> -->
                             <br>
                             <div class="flex align-center">
                                 <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
@@ -91,8 +89,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="plotly-div3" class="bg-white shadow-lg rounded-lg h-64"> <!-- Plotly chart will be inserted here --> </div>
-                </div>
+                    <div id="plotly-div3" class="bg-white shadow-lg rounded-lg h-64"></div>
+                </div>-->
             </div>
        
         </div>
@@ -140,55 +138,55 @@
             }]
         });
 
-        // Create initial chart 2 for company 2
-        const chart2 = Highcharts.chart('plotly-div2', {
-            title: {
-                text: 'TSLA'
-            },
-            chart: {
-                type: 'line'
-            },
-            xAxis: {
-                title: {
-                    text: 'Timestamp'
-                },
-                min: 0,
-                max: data_size
-            },
-            yAxis: {
-                title: {
-                    text: '$ Per Share'
-                },
-            },
-            series: [{
-                data: []
-            }]
-        });
+        // // Create initial chart 2 for company 2
+        // const chart2 = Highcharts.chart('plotly-div2', {
+        //     title: {
+        //         text: 'TSLA'
+        //     },
+        //     chart: {
+        //         type: 'line'
+        //     },
+        //     xAxis: {
+        //         title: {
+        //             text: 'Timestamp'
+        //         },
+        //         min: 0,
+        //         max: data_size
+        //     },
+        //     yAxis: {
+        //         title: {
+        //             text: '$ Per Share'
+        //         },
+        //     },
+        //     series: [{
+        //         data: []
+        //     }]
+        // });
 
-        // Create initial chart 3 for company 3
-        const chart3 = Highcharts.chart('plotly-div3', {
-            title: {
-                text: 'AAPL'
-            },
-            chart: {
-                type: 'line'
-            },
-            xAxis: {
-                title: {
-                    text: 'Timestamp'
-                },
-                min: 0,
-                max: data_size
-            },
-            yAxis: {
-                title: {
-                    text: '$ Per Share'
-                },
-            },
-            series: [{
-                data: []
-            }]
-        });
+        // // Create initial chart 3 for company 3
+        // const chart3 = Highcharts.chart('plotly-div3', {
+        //     title: {
+        //         text: 'AAPL'
+        //     },
+        //     chart: {
+        //         type: 'line'
+        //     },
+        //     xAxis: {
+        //         title: {
+        //             text: 'Timestamp'
+        //         },
+        //         min: 0,
+        //         max: data_size
+        //     },
+        //     yAxis: {
+        //         title: {
+        //             text: '$ Per Share'
+        //         },
+        //     },
+        //     series: [{
+        //         data: []
+        //     }]
+        // });
 
         // Function to update all stock charts at every interval
         let idx = 0
@@ -202,21 +200,21 @@
             }
 
             // Add the next data point to the chart2
-            if (idx < data_size) {
-                chart2.series[0].addPoint(y_data_arr[idx]);
-                price_display_2.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
-            } else {
-                clearInterval(interval); // Stop generating data after set number of points
-            }
+            // if (idx < data_size) {
+            //     chart2.series[0].addPoint(y_data_arr[idx]);
+            //     price_display_2.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
+            // } else {
+            //     clearInterval(interval); // Stop generating data after set number of points
+            // }
             idx++;
 
             // Add the next data point to the chart3
-            if (idx < data_size) {
-                chart3.series[0].addPoint(y_data_arr[idx]);
-                price_display_3.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
-            } else {
-                clearInterval(interval); // Stop generating data after set number of points
-            }
+            // if (idx < data_size) {
+            //     chart3.series[0].addPoint(y_data_arr[idx]);
+            //     price_display_3.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
+            // } else {
+            //     clearInterval(interval); // Stop generating data after set number of points
+            // }
         }, 500); // Inteval length in ms. tweek to control the speed of the graph
 
     </script>

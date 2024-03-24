@@ -8,19 +8,19 @@ body {
 #plotly-div1 {
     width: 40rem;
     height: 20rem;
-    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 30px; 
 }
 #plotly-div2 {
     width: 40rem;
     height: 20rem;
-    margin-top: 20px; 
+    margin-bottom: 20px; 
     margin-left: 30px;
 }
 #plotly-div3 {
     width: 40rem;
     height: 20rem;
-    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 30px; 
 }
 
