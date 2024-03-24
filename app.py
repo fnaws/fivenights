@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from market import Market
-import simulator
+import symbolator
 import plotly
 import plotly.graph_objs as go
 import json
@@ -18,8 +18,8 @@ def index():
     big_data = []
     # Get the data from the API
 
-    symbs = simulator.get_random()
-    month = simulator.random_date()
+    symbs = symbolator.get_random()
+    month = symbolator.random_date()
     print(symbs)
     for symb in symbs:
         try:
