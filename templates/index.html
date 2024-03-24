@@ -43,7 +43,7 @@
                     <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-A">
                         <div class = "inline items-center justify-between">
                             <div class = "flex flex-row ml-2 mt-4">
-                                <h2 class="font-bold text-lg w-24 mx-2">MSFT</h2>
+                                <h2 class="font-bold text-lg w-24 mx-2" id="stock1-symb"></h2>
                                 <h5 class="text-md mx-2" id ="shares-display1">Shares: <span id="shares-display1-amt">{{ shares }}</span></h5>
                                 <h5 class="text-md mx-2" id="price-display1">Price: $<span id="price-display1-amt">0</span></h5>
                             </div>
@@ -118,9 +118,12 @@
         document.getElementById('decrease').style.cursor = "pointer";
         document.getElementById('decrease').style.opacity = "1";
 
-        let y_data_arr = {{ data|safe }};
+        let y_data_arr_all = {{ big_data|safe }};
+        //console.log(y_data_arr_all);
+        let symb1 = y_data_arr_all[0][0]; // First asset's symb name
+        document.getElementById("stock1-symb").innerHTML = symb1; // update the html with the symb name
+        let y_data_arr = y_data_arr_all[0][1]; // First asset's data for all 5 days
         //console.log(y_data_arr);
-        const day_len = y_data_arr[0].length;
         let currentDay = 0;
         const totalDays = 5;
 
@@ -131,11 +134,13 @@
 
         // Function to run the graph for a single day
         function runGraph() {
+            // get the length of the data array for this day
+            const day_len = y_data_arr[currentDay].length;
 
             // Create initial chart canvas
             const chart1 = Highcharts.chart('plotly-div1', {
                 title: {
-                    text: 'MSFT'
+                    text: symb1
                 },
                 chart: {
                     type: 'line'
@@ -182,7 +187,7 @@
 
                 }
                 idx++;
-            }, 100); // Inteval length in ms. tweek to control the speed of the graph
+            }, 50); // Inteval length in ms. tweek to control the speed of the graph
         }
 
         // run the graph for the first day

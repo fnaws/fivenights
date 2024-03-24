@@ -32,44 +32,26 @@ def index():
             extended_hours='false'
         )
         transformed_data = m.day_data(month_data=data)
-        # Transform the data to plot, x is the time, y is average of high and low
-        plotting_data = []
-        for index, row in data.iterrows():
-            plotting_data.append({
-                'x': index,
-                'y': np.mean([row['2. high'], row['3. low']])
-            })
-        x_data = [entry['x'] for entry in plotting_data]
-        y_data = [entry['y'] for entry in plotting_data]
 
-        big_data.append((symb, y_data))
+        big_data.append([symb, transformed_data])
 
-    raw_data = m.load_data(
-        function='TIME_SERIES_INTRADAY',
-        symbol='TSLA',  # Make this random
-        interval='1min',
-        month='2023-09',  # Make this random
-        outputsize='full',
-        extended_hours='false'
-    )
-    data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
-
-    # Initialize plotting data for 5 days
-    plotting_data = {'x': [], 'y': []}
-    for day_data in data:  # Assuming day_data is a list of open prices for the day
-        day_x_data = range(len(day_data))  # Generate a range object for x-axis (minutes)
-        day_y_data = day_data  # Y-axis data
-        
-        # Append day data to plotting data
-        plotting_data['x'].append(day_x_data)
-        plotting_data['y'].append(day_y_data)
+    # for preloaded data (failsafe)
+    # raw_data = m.load_data(
+    #     function='TIME_SERIES_INTRADAY',
+    #     symbol='TSLA',  # Make this random
+    #     interval='1min',
+    #     month='2023-09',  # Make this random
+    #     outputsize='full',
+    #     extended_hours='false'
+    # )
+    # data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
 
     # graphJSON = json.dumps(plotting_data, cls=plotly.utils.PlotlyJSONEncoder)
     shares = 0
     wallet = 10000.00
     net_gain = 0.00
 
-    return render_template('index.html', data=data, wallet=wallet, shares=shares, net_gain=net_gain)
+    return render_template('index.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain)
 
 @app.route('/buy', methods=['POST'])
 def buy():
