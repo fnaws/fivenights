@@ -137,12 +137,14 @@ class Market:
             print(f'Could not load data from {symbol}/{month}, trying TSLA/2023-09')
             data = pd.read_csv(f'data/stocks/TSLA/2023-09.csv')
         ret = self.day_data(data)
+        '''
         try:
             # delete file to free up disk space
             os.remove(f'data/stocks/{symbol}/{month}')
             print(f'Deleted {symbol}/{month}')
         except:
             print(f'Could not delete {symbol}/{month}')
+        '''
         return ret
 
     def _view(self, data, display='day'):
