@@ -25,7 +25,7 @@
                 <h5 class="font-bold text-lg">Net Gain: <span id="net-gain">{{ net_gain }}</span>%</h5>
             </div>
             <div>
-                <div class="text-xl font-bold text-green-700" id="day-display">Day 1</div>
+                <div class="text-xl font-bold text-green-700 align-middle" id="day-display">Day 1</div>
             </div>
             <div class="text-center my-4">
                 <button id="switchDayButton" class="bg-gradient-to-r from-green-500 to-green-700 hover:bg-green-300 text-white font-bold py-2 px-4 rounded">
@@ -50,7 +50,7 @@
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
-                            <div class="flex align-center">
+                            <div class="flex align-middle">
                                 <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1 text-gray-900" placeholder="Quantity" name="asset1"> 
                                 <button class="btn btn--ripple2" id = "increase">Buy</button>
                                 <button class="btn btn--ripple"  id = "decrease">Sell</button>
@@ -104,7 +104,7 @@
 
     </div>
      <!-- Instructions Modal -->
-     <div id="instructionsModal" class="justify-center align-center self-center modal hidden">
+     <div id="instructionsModal" class="justify-center align-middle self-center modal hidden">
         <div class="modal-content bg-gray-800 bg-opacity-90 text-gray-100 leading-7">
             <span class="close" id="startGame">&times;</span>
             <h2>Welcome to Five Nights at Wall Street!</h2>
@@ -130,20 +130,24 @@
             <p>Good luck, trader!</p>
         </div>
     </div>
-    <div id = "gameOverModal" class = "justify-center align-center self-center modal hidden">
+    <div id = "gameOverModal" class = "justify-center align-middle self-center modal hidden">
         <div class="modal-content bg-gray-800 bg-opacity-90 text-gray-100 leading-7">
             <!-- <span class="close2">&times;</span> -->
             <h2>Game Over!</h2>
             <br></br>
             <h3>Final Results:</h3>
             <ul>
-                <li>Your final wallet balance is: $<span id="wallet-amount">{{ wallet }}</span></li>
-                <li>Your net gain is: <span id="net-gain">{{ net_gain }}</span>%</li>
+                <li>Your final wallet balance is: $<span id="wallet-amount-final"></span></li>
+                <li>Your net gain is: <span id="net-gain-final"></span>%</li>
                 <li>This data was from {{ big_data[0][0] }} for the week of {{ first_day }}</li>
             </ul>
-            <br></br>
+            <script>
+                document.getElementById("wallet-amount-final").textContent = document.getElementById("wallet-amount").textContent;
+                document.getElementById("net-gain-final").textContent = document.getElementById("net-gain").textContent;
+            </script>
             <h3>Thank you for playing Five Nights at Wall Street!</h3>
-            <p>Want to play again? Refresh the page to begin a new round!</p>
+            <p>Want to play again?</p>
+            <a href="/" class="bg-gradient-to-r from-green-500 to-green-700 hover:bg-green-300 text-white font-bold py-2 px-4 rounded">Play Again</a>
         </div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
