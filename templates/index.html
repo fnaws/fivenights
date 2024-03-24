@@ -24,7 +24,12 @@
                 <h5 class="font-bold text-lg">Net Gain: $<span id="net-gain">+0.0%</span></h5>
             </div>
             <div>
-                <div class="text-xl font-bold">Day n</div>
+                <div class="text-xl font-bold" id="day-display" >Day 1</div>
+            </div>
+            <div class="text-center my-4">
+                <button id="switchDayButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next Day
+                </button>
             </div>
         </header>
 
@@ -40,7 +45,8 @@
                             <div class = "flex flex-row ml-2 mt-4">
                                 <h2 class="font-bold text-lg w-24 mx-2">MSFT</h2>
                                 <h5 class="text-md mx-2">Shares: 0</h5>
-                                <h5 class="text-md mx-2" id="price-display1">Price: 0$</h5>
+                                <h5 class="text-md mx-2" id="price-display1">Price: $<span id="price-display1-amt">0</span></h5>
+                                <h5 class="text-md mx-2" id="error-display1"></h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
@@ -99,123 +105,95 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script>
-        //var graphs = {{ graphJSON|safe }};
-        //var layout = {{ layoutJSON|safe }};
-        let x_data_arr = {{ x_data|safe }};
-        let y_data_arr = {{ y_data|safe }};
-        let data_size = y_data_arr.length;
-        console.log(x_data_arr);
-        //console.log(data_size);
+        // global vars
+        document.getElementById('switchDayButton').disabled = true;
+        document.getElementById('switchDayButton').style.cursor = "not-allowed";
+        document.getElementById('switchDayButton').style.opacity = "0.5";
+        let y_data_arr = {{ data|safe }};
         //console.log(y_data_arr);
+        const day_len = y_data_arr[0].length;
+        let currentDay = 0;
+        const totalDays = 5;
 
         // Get the price displays
-        const price_display_1 = document.getElementById("price-display1");
-        const price_display_2 = document.getElementById("price-display2");
-        const price_display_3 = document.getElementById("price-display3");
+        // const price_display_1 = document.getElementById("price-display1");
+        // const price_display_2 = document.getElementById("price-display2");
+        // const price_display_3 = document.getElementById("price-display3");
 
-        // Create initial chart 1 for company 1
-        const chart1 = Highcharts.chart('plotly-div1', {
-            title: {
-                text: 'MSFT'
-            },
-            chart: {
-                type: 'line'
-            },
-            xAxis: {
+        // Function to run the graph for a single day
+        function runGraph() {
+
+            // Create initial chart canvas
+            const chart1 = Highcharts.chart('plotly-div1', {
                 title: {
-                    text: 'Timestamp'
+                    text: 'MSFT'
                 },
-                min: 0,
-                max: data_size
-            },
-            yAxis: {
-                title: {
-                    text: '$ Per Share'
+                chart: {
+                    type: 'line'
                 },
-            },
-            series: [{
-                data: []
-            }]
+                xAxis: {
+                    title: {
+                        text: 'Timestamp'
+                    },
+                    min: 0,
+                    max: day_len
+                },
+                yAxis: {
+                    title: {
+                        text: '$ Per Share'
+                    },
+                },
+                series: [{
+                    data: []
+                }]
+            });
+
+            // Update the chart at every interval
+            let idx = 0
+            const interval = setInterval(() => {
+                // Add the next data point to the chart1
+                if (idx < day_len) {
+                    chart1.series[0].addPoint(y_data_arr[currentDay][idx]);
+                    document.getElementById("price-display1-amt").textContent = y_data_arr[currentDay][idx].toFixed(2).toString();
+                } else {
+                    clearInterval(interval); // Stop generating data after set number of points
+                    document.getElementById('switchDayButton').disabled = false;
+                    document.getElementById('switchDayButton').style.cursor = "pointer";
+                    document.getElementById('switchDayButton').style.opacity = "1";
+                }
+                idx++;
+            }, 100); // Inteval length in ms. tweek to control the speed of the graph
+        }
+
+        // run the graph for the first day
+        runGraph();
+
+        // Function to switch to the next day and clear chart
+        document.getElementById('switchDayButton').addEventListener('click', function() {
+            if (currentDay < totalDays - 1) {
+                // update the day display
+                currentDay++;
+                
+                let displayDay = currentDay + 1;
+                document.getElementById("day-display").innerHTML = "Day " + displayDay.toString();
+                document.getElementById('switchDayButton').disabled = true;
+                document.getElementById('switchDayButton').style.cursor = "not-allowed";
+                document.getElementById('switchDayButton').style.opacity = "0.5";
+
+                // run the graph again
+                runGraph();
+            
+            } else {
+                alert("You've viewed all days."); // Optionally, loop back to the first day or disable the button
+            }
         });
 
-        // // Create initial chart 2 for company 2
-        // const chart2 = Highcharts.chart('plotly-div2', {
-        //     title: {
-        //         text: 'TSLA'
-        //     },
-        //     chart: {
-        //         type: 'line'
-        //     },
-        //     xAxis: {
-        //         title: {
-        //             text: 'Timestamp'
-        //         },
-        //         min: 0,
-        //         max: data_size
-        //     },
-        //     yAxis: {
-        //         title: {
-        //             text: '$ Per Share'
-        //         },
-        //     },
-        //     series: [{
-        //         data: []
-        //     }]
-        // });
+        // Function to buy stock
+        document.getElementById('increase').addEventListener('click', function() {
+            const curr_price = document.getElementById("price-display1-amt");
 
-        // // Create initial chart 3 for company 3
-        // const chart3 = Highcharts.chart('plotly-div3', {
-        //     title: {
-        //         text: 'AAPL'
-        //     },
-        //     chart: {
-        //         type: 'line'
-        //     },
-        //     xAxis: {
-        //         title: {
-        //             text: 'Timestamp'
-        //         },
-        //         min: 0,
-        //         max: data_size
-        //     },
-        //     yAxis: {
-        //         title: {
-        //             text: '$ Per Share'
-        //         },
-        //     },
-        //     series: [{
-        //         data: []
-        //     }]
-        // });
+        });
 
-        // Function to update all stock charts at every interval
-        let idx = 0
-        const interval = setInterval(() => {
-            // Add the next data point to the chart1
-            if (idx < data_size) {
-                chart1.series[0].addPoint(y_data_arr[idx]);
-                price_display_1.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
-            } else {
-                clearInterval(interval); // Stop generating data after set number of points
-            }
-
-            // Add the next data point to the chart2
-            // if (idx < data_size) {
-            //     chart2.series[0].addPoint(y_data_arr[idx]);
-            //     price_display_2.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
-            // } else {
-            //     clearInterval(interval); // Stop generating data after set number of points
-            // }
-            idx++;
-
-            // Add the next data point to the chart3
-            // if (idx < data_size) {
-            //     chart3.series[0].addPoint(y_data_arr[idx]);
-            //     price_display_3.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
-            // } else {
-            //     clearInterval(interval); // Stop generating data after set number of points
-            // }
-        }, 500); // Inteval length in ms. tweek to control the speed of the graph
 
     </script>
     
