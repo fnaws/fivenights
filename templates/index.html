@@ -24,7 +24,7 @@
                 <h5 class="font-bold text-lg">Net Gain: $<span id="net-gain">+0.0%</span></h5>
             </div>
             <div>
-                <div class="text-xl font-bold" id="day-display">Day 1</div>
+                <div class="text-xl font-bold" id="day-display" >Day 1</div>
             </div>
             <div class="text-center my-4">
                 <button id="switchDayButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -106,6 +106,9 @@
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script>
         // global vars
+        document.getElementById('switchDayButton').disabled = true;
+        document.getElementById('switchDayButton').style.cursor = "not-allowed";
+        document.getElementById('switchDayButton').style.opacity = "0.5";
         let y_data_arr = {{ data|safe }};
         //console.log(y_data_arr);
         const day_len = y_data_arr[0].length;
@@ -154,6 +157,9 @@
                     document.getElementById("price-display1-amt").textContent = y_data_arr[currentDay][idx].toFixed(2).toString();
                 } else {
                     clearInterval(interval); // Stop generating data after set number of points
+                    document.getElementById('switchDayButton').disabled = false;
+                    document.getElementById('switchDayButton').style.cursor = "pointer";
+                    document.getElementById('switchDayButton').style.opacity = "1";
                 }
                 idx++;
             }, 100); // Inteval length in ms. tweek to control the speed of the graph
@@ -167,8 +173,12 @@
             if (currentDay < totalDays - 1) {
                 // update the day display
                 currentDay++;
+                
                 let displayDay = currentDay + 1;
                 document.getElementById("day-display").innerHTML = "Day " + displayDay.toString();
+                document.getElementById('switchDayButton').disabled = true;
+                document.getElementById('switchDayButton').style.cursor = "not-allowed";
+                document.getElementById('switchDayButton').style.opacity = "0.5";
 
                 // run the graph again
                 runGraph();
