@@ -202,8 +202,7 @@
                 document.getElementById('decrease').disabled = false;
                 document.getElementById('decrease').style.cursor = "pointer";
                 document.getElementById('decrease').style.opacity = "1";
-
-        
+                
                 document.getElementById('switchDayButton').disabled = true;
                 document.getElementById('switchDayButton').style.cursor = "not-allowed";
                 document.getElementById('switchDayButton').style.opacity = "0.5";
@@ -233,16 +232,29 @@
     <div id="instructionsModal" class="modal hidden">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Game Instructions</h2>
-            <p>Welcome to Five Nights at Wall Street! Here's how to play:</p>
-            <!-- Include your game instructions here -->
+            <h2>Welcome to Five Nights at Wall Street!</h2>
+            <br></br>
+            <h3>Starting the Game:</h3>
             <ul>
-                <li>Rule 1: Buy low, sell high.</li>
-                <li>Rule 2: Watch the market trends.</li>
-                <!-- Add more rules here -->
+                <li>You begin with a virtual wallet filled with $10,000.</li>
+                <li>The game spans over five simulated days, representing five different stages of market scenarios.</li>
             </ul>
+            <br></br>
+            <h3>How to Play:</h3>
+            <ul>
+                <li><strong>Monitor the Market:</strong> Observe the fluctuating stock chart for a selected stock. The chart updates in real-time, reflecting the simulated market's ups and downs.</li>
+                <li><strong>Buying Stocks:</strong> Enter the number of shares you want to purchase in the input box, then click "BUY" to execute the transaction. The cost of the purchase will be deducted from your wallet, and your share count will increase.</li>
+                <li><strong>Selling Stocks:</strong> Enter the number of shares you wish to sell, then click "SELL". The revenue from the sale will be added to your wallet, and your share count will decrease.</li>
+                <li><strong>Strategize:</strong> Aim to buy stocks when the prices dip and sell when they peak. Your goal is to increase your wallet balance and achieve the highest net gain possible.</li>
+                <li><strong>Advance the Game:</strong> Each day lasts until you decide to move on. When you're ready, click "Next Day" to see how the market evolves.</li>
+                <li><strong>Winning the Game:</strong> Your success is measured by your net gain at the end of the game. Manage your risks wisely and make your trades count!</li>
+            </ul>
+            <br></br>
+            <p>Remember, this simulation is a sprint, not a marathon. With only 30 seconds per day, quick thinking and decisive action are key. Can you outsmart the market and emerge wealthier?</p>
+            <p>Good luck, trader!</p>
         </div>
     </div>
+
 
     <!-- Link to your custom JavaScript file -->
     <script src="../static/js/modalLogic.js"></script>

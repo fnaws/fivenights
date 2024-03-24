@@ -449,28 +449,30 @@ footer {
     color: #fff; /* Text color for the footer content */
 }
 
-
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 2; /* Sit on top */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  position: fixed;
+  z-index: 2; /* Adjust if needed to ensure it's on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.6); /* Black w/ reduced opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
 }
 
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 60%; /* Reduced width */
-  /* ... */
+  width: auto; /* Allows the box to grow with content */
+  max-width: 1000px; /* Adjust as needed */
+  margin: 20px; /* Provides space around the content */
+  border-radius: 5px; /* Optional: rounds the corners */
 }
 
 /* The Close Button */
@@ -486,6 +488,15 @@ footer {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Override tailwind utility if it's being applied */
+.container {
+  max-width: 100%;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 /* Hidden class */
