@@ -46,7 +46,6 @@
                                 <h2 class="font-bold text-lg w-24 mx-2">MSFT</h2>
                                 <h5 class="text-md mx-2" id ="shares-display1">Shares: <span id="shares-display1-amt">{{ shares }}</span></h5>
                                 <h5 class="text-md mx-2" id="price-display1">Price: $<span id="price-display1-amt">0</span></h5>
-                                <h5 class="text-md mx-2" id="error-display1"></h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
@@ -55,6 +54,7 @@
                                 <button class="btn btn--ripple2" id = "increase">Buy</button>
                                 <button class="btn btn--ripple"  id = "decrease">Sell</button>
                             </div>
+                            <h5 class="text-md mx-2" id="error-display1"></h5>
                         </div>
                     </div>
                     <div id="plotly-div1" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
@@ -272,7 +272,8 @@
                             var errorMsg = JSON.parse(xhr.responseText).error;
                             console.error(errorMsg);
                             // alert(errorMsg);  // Display the error message from the server
-                            $('input[name="name"]').addClass('error-animation');  // Trigger visual feedback
+                            $('input[name="asset1"]').addClass('error-animation');  // Trigger visual feedback
+                            $('#error-display1').text(errorMsg);
                         } else {
                             console.error("An unexpected error occurred.");
                         }
@@ -302,7 +303,8 @@
                             var errorMsg = JSON.parse(xhr.responseText).error;
                             console.error(errorMsg);
                             // alert(errorMsg);  // Display the error message from the server
-                            $('input[name="name"]').addClass('error-animation');  // Trigger visual feedback
+                            $('input[name="asset1"]').addClass('error-animation');  // Trigger visual feedback
+                            $('#error-display1').text(errorMsg);
                         } else {
                             console.error("An unexpected error occurred.");
                         }
@@ -310,8 +312,9 @@
                 });
             });
         });
-        $('input[name="name"]').on('input', function() {
+        $('input[name="asset1"]').on('input', function() {
             $(this).removeClass('error-animation');
+            $('#error-display1').text('');
         });
         </script>
     

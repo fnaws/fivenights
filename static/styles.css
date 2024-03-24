@@ -514,3 +514,10 @@ footer {
 .error-animation {
   animation: pulseRed 1s infinite, shake 0.5s;
 }
+
+#error-display1 {
+  color: red;
+  font-size: 0.7rem;
+  margin-top: 0;
+  margin-left: 0;
+}
