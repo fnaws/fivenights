@@ -1,27 +1,24 @@
-// Function to create ripple effect
-function createRipple(button) {
+function addRippleEffect(button) {
   button.addEventListener("mouseover", function (e) {
+    // Create a new span for the ripple effect every time there is a mouseover event
+    let rippleSpan = document.createElement("span");
+    rippleSpan.classList.add("ripple");
+    this.appendChild(rippleSpan);
+
+    // Position the span element
     let x = e.clientX - e.target.offsetLeft;
     let y = e.clientY - e.target.offsetTop;
-    let ripples = document.createElement("span");
-    ripples.style.left = x + "px";
-    ripples.style.top = y + "px";
-    this.appendChild(ripples);
+    rippleSpan.style.left = x + 'px';
+    rippleSpan.style.top = y + 'px';
 
+    // Remove the span after it animates
     setTimeout(() => {
-      ripples.remove();
-    }, 1000);
-  });
-
-  button.addEventListener("mouseout", function (e) {
-    this.querySelectorAll('span').forEach(span => span.remove());
+      rippleSpan.remove();
+    }, 600); // Ensure this matches the duration of your ripple effect
   });
 }
 
-// Apply ripple effect to each button
-createRipple(document.getElementById("increase"));
-createRipple(document.getElementById("decrease"));
-createRipple(document.getElementById("increase2"));
-createRipple(document.getElementById("decrease2"));
-createRipple(document.getElementById("increase3"));
-// Add more buttons if necessary
+// Add the ripple effect to all buttons with the 'btn' class
+document.querySelectorAll('.btn').forEach(button => {
+  addRippleEffect(button);
+});

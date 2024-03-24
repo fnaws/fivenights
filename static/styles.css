@@ -5,7 +5,7 @@ body {
     background-image: url('path_to_paper_texture.jpg') center center fixed;
 }
 
-#plotly-div {
+#plotly-div1 {
     width: 40rem;
     height: 20rem;
     margin-top: 20px;
