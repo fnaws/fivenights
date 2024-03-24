@@ -79,15 +79,19 @@ class Market:
         #Save data to CSV
         try:
             os.makedirs(f'data/stocks/{symbol}')
+            print(f"{symbol} directory created")
         except:
             pass
         try:
             df.to_csv(f'data/stocks/{symbol}/{month}.csv')
         except:
-            pass
-            #print("Directories already exist or could not be created")
+            print(f"{symbol}/{month}.csv already exists or could not be created")
 
-        return df
+        try:
+            # bro what?? this works but returning the df doesn't??
+            return pd.read_csv(f'data/stocks/{symbol}/{month}.csv')
+        except:
+            return df
     
     def day_data(self, month_data: pd.DataFrame):
         '''Get the data for a single day from the month data'''

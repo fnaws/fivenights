@@ -9,8 +9,13 @@ except FileNotFoundError:
     with open('static/symbols.txt', 'w') as f:
         f.write('\n'.join(data))
 
-def get_random(n=3):
+def get_random(n=2):
     random_symbols = []
     for i in range(n):
         random_symbols.append(random.choice(data))
     return random_symbols
+
+def random_date():
+    year = random.choice(range(2013, 2024))
+    month = random.choice(range(1, 13))
+    return f'{year}-{month}'

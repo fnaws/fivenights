@@ -18,12 +18,16 @@ def index():
     big_data = []
     # Get the data from the API
 
-    for symb in simulator.get_random():
+    symbs = simulator.get_random()
+    month = simulator.random_date()
+    print(symbs)
+    for symb in symbs:
+        print(symb)
         data = m.load_data(
             function='TIME_SERIES_INTRADAY',
             symbol=symb,
             interval='1min',
-            month='2023-09',
+            month=month,
             outputsize='full',
             extended_hours='false'
         )
