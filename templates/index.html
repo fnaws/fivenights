@@ -40,6 +40,7 @@
                             <div class = "flex flex-row ml-2 mt-4">
                                 <h2 class="font-bold text-lg w-24 mx-2">AAPL</h2>
                                 <h5 class="text-md mx-2">Shares: 0</h5>
+                                <h5 class="text-md mx-2" id="price-display1">Price: 0$</h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
@@ -59,6 +60,7 @@
                             <div class = "flex flex-row ml-2 mt-4">
                                 <h2 class="font-bold text-lg w-24 mx-2">TSLA</h2>
                                 <h5 class="text-md mx-2">Shares: 0</h5>
+                                <h5 class="text-md mx-2" id="price-display2">Price: 0$</h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
@@ -78,6 +80,7 @@
                             <div class = "flex flex-row ml-2 mt-4">
                                 <h2 class="font-bold text-lg w-24 mx-2">AAPL</h2>
                                 <h5 class="text-md mx-2">Shares: 0</h5>
+                                <h5 class="text-md mx-2" id="price-display3">Price: 0$</h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
@@ -100,21 +103,37 @@
     <script>
         //var graphs = {{ graphJSON|safe }};
         //var layout = {{ layoutJSON|safe }};
-        //let x_data_arr = {{ x_data|safe }};
+        let x_data_arr = {{ x_data|safe }};
         let y_data_arr = {{ y_data|safe }};
         let data_size = y_data_arr.length;
-        //console.log(x_data_arr);
-        console.log(data_size);
+        console.log(x_data_arr);
+        //console.log(data_size);
         //console.log(y_data_arr);
+
+        // Get the price displays
+        const price_display_1 = document.getElementById("price-display1");
+        const price_display_2 = document.getElementById("price-display2");
+        const price_display_3 = document.getElementById("price-display3");
 
         // Create initial chart 1 for company 1
         const chart1 = Highcharts.chart('plotly-div', {
+            title: {
+                text: 'MSFT'
+            },
             chart: {
                 type: 'line'
             },
             xAxis: {
+                title: {
+                    text: 'Timestamp'
+                },
                 min: 0,
                 max: data_size
+            },
+            yAxis: {
+                title: {
+                    text: '$ Per Share'
+                },
             },
             series: [{
                 data: []
@@ -123,12 +142,23 @@
 
         // Create initial chart 2 for company 2
         const chart2 = Highcharts.chart('plotly-div2', {
+            title: {
+                text: 'TSLA'
+            },
             chart: {
                 type: 'line'
             },
             xAxis: {
+                title: {
+                    text: 'Timestamp'
+                },
                 min: 0,
                 max: data_size
+            },
+            yAxis: {
+                title: {
+                    text: '$ Per Share'
+                },
             },
             series: [{
                 data: []
@@ -137,12 +167,23 @@
 
         // Create initial chart 3 for company 3
         const chart3 = Highcharts.chart('plotly-div3', {
+            title: {
+                text: 'AAPL'
+            },
             chart: {
                 type: 'line'
             },
             xAxis: {
+                title: {
+                    text: 'Timestamp'
+                },
                 min: 0,
                 max: data_size
+            },
+            yAxis: {
+                title: {
+                    text: '$ Per Share'
+                },
             },
             series: [{
                 data: []
@@ -155,6 +196,7 @@
             // Add the next data point to the chart1
             if (idx < data_size) {
                 chart1.series[0].addPoint(y_data_arr[idx]);
+                price_display_1.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
             } else {
                 clearInterval(interval); // Stop generating data after set number of points
             }
@@ -162,6 +204,7 @@
             // Add the next data point to the chart2
             if (idx < data_size) {
                 chart2.series[0].addPoint(y_data_arr[idx]);
+                price_display_2.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
             } else {
                 clearInterval(interval); // Stop generating data after set number of points
             }
@@ -170,43 +213,14 @@
             // Add the next data point to the chart3
             if (idx < data_size) {
                 chart3.series[0].addPoint(y_data_arr[idx]);
+                price_display_3.innerHTML = "Price: " + y_data_arr[idx].toFixed(2).toString() + "$";
             } else {
                 clearInterval(interval); // Stop generating data after set number of points
             }
-        }, 500);
+        }, 500); // Inteval length in ms. tweek to control the speed of the graph
 
-        /*
-        layout.staticPlot = true;  // Making the plot static (non-interactive)
-        
-        // Updating layout for axis titles
-        layout.xaxis = {title: 'Time of Day'};
-        layout.yaxis = {title: 'Dollars Per Share', 
-                        tickmode: 'array',
-                        tickvals: [1, 2, 3, 4, 5, 6, 7, 8],
-                        ticktext: ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM']};
-
-        let graphs2 = {{ graphJSON2|safe }};
-        let layout2 = {{ layoutJSON2|safe }};
-        layout2.staticPlot = true;  // Making the plot static (non-interactive)
-        
-        // Updating layout for axis titles
-        layout2.xaxis = {title: 'Time of Day'};
-        layout2.yaxis = {title: 'Dollars Per Share', 
-                        tickmode: 'array',
-                        tickvals: [1, 2, 3, 4, 5, 6, 7, 8],
-                        ticktext: ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM']};
-
-        let graphs3 = {{ graphJSON3|safe }};
-        let layout3 = {{ layoutJSON3|safe }};
-        layout3.staticPlot = true;  // Making the plot static (non-interactive)
-
-
-        
-        Plotly.newPlot('plotly-div', graphs, layout, {displayModeBar: false});
-        Plotly.newPlot('plotly-div2', graphs, layout, {displayModeBar: false});
-        Plotly.newPlot('plotly-div3', graphs, layout, {displayModeBar: false});
-        */
     </script>
+    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/rippleButton.js"></script>
