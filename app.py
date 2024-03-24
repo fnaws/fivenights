@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from market import Market
 import symbolator
 import plotly
@@ -56,19 +56,90 @@ def index():
     )
     data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
 
-    # Initialize plotting data for 5 days
-    plotting_data = {'x': [], 'y': []}
-    for day_data in data:  # Assuming day_data is a list of open prices for the day
-        day_x_data = range(len(day_data))  # Generate a range object for x-axis (minutes)
-        day_y_data = day_data  # Y-axis data
-        
-        # Append day data to plotting data
-        plotting_data['x'].append(day_x_data)
-        plotting_data['y'].append(day_y_data)
+
+    # for preloaded data (failsafe)
+    # raw_data = m.load_data(
+    #     function='TIME_SERIES_INTRADAY',
+    #     symbol='TSLA',  # Make this random
+    #     interval='1min',
+    #     month='2023-09',  # Make this random
+    #     outputsize='full',
+    #     extended_hours='false'
+    # )
+    # data = m.day_data(raw_data)  # Assume this returns a list of 5 elements, each being a day's data
+
 
     # graphJSON = json.dumps(plotting_data, cls=plotly.utils.PlotlyJSONEncoder)
+    shares = 0
+    wallet = 10000.00
+    net_gain = 0.00
 
-    return render_template('index.html', data=data)
+    return render_template('index.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain)
+
+@app.route('/buy', methods=['POST'])
+def buy():
+    # Assume these variables are updated somehow here
+    wallet = request.form['wallet_amount']
+    shares = request.form['shares']
+    net_gain = request.form['net_gain']
+    quantity = request.form['quantity']
+    curr_price = request.form['curr_price']
+
+    print(shares)
+    wallet = float(wallet)
+    shares = float(shares)
+    net_gain = float(net_gain)
+    quantity = float(quantity)
+    curr_price = float(curr_price)
+    wallet = wallet - (quantity * curr_price)
+    shares = shares + quantity
+    #wallet is always initially 10000
+    net_gain = (wallet + (shares * curr_price) - 10000)/100
+
+    #Float formatting
+    wallet = round(wallet, 2)
+    shares = round(shares, 2)
+    net_gain = round(net_gain, 2)
+
+    print(wallet)
+
+    if wallet < 0:
+        return jsonify({"error": "Insufficient funds in wallet"}), 400 
+
+    # Or return them in a JSON request
+    return jsonify(wallet=wallet, shares=shares, net_gain=net_gain)
+
+@app.route('/sell', methods=['POST'])
+def sell():
+    # Assume these variables are updated somehow here
+    wallet = request.form['wallet_amount']
+    shares = request.form['shares']
+    net_gain = request.form['net_gain']
+    quantity = request.form['quantity']
+    curr_price = request.form['curr_price']
+
+    wallet = float(wallet)
+    shares = float(shares)
+    net_gain = float(net_gain)
+    quantity = float(quantity)
+    curr_price = float(curr_price)
+
+    wallet = wallet + (quantity * curr_price)
+    shares = shares - quantity
+    net_gain = (wallet + (shares * curr_price) - 10000)/100
+
+    #Float formatting
+    wallet = round(wallet, 2)
+    shares = round(shares, 2)
+    net_gain = round(net_gain, 2)
+
+
+    if shares < 0:
+        return jsonify({"error": "Not enough shares"}), 400
+ 
+
+    # Or return them in a JSON request
+    return jsonify(wallet=wallet, shares=shares, net_gain=net_gain)
             
 if __name__ == '__main__':
     app.run(debug=True)

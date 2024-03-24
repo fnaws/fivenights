@@ -20,8 +20,8 @@
                 <h4 class="text-md">Welcome to the stock market! Buy and sell stocks to increase your wealth!</h4>
             </div>
             <div>
-                <h5 class="font-bold text-lg">Wallet: $<span id="wallet-amount">10000</span></h5>
-                <h5 class="font-bold text-lg">Net Gain: $<span id="net-gain">+0.0%</span></h5>
+                <h5 class="font-bold text-lg">Wallet: $<span id="wallet-amount">{{ wallet }}</span></h5>
+                <h5 class="font-bold text-lg">Net Gain: $+<span id="net-gain">{{ net_gain }}</span>%</h5>
             </div>
             <div>
                 <div class="text-xl font-bold" id="day-display" >Day 1</div>
@@ -43,18 +43,18 @@
                     <div class="stock bg-white shadow-lg rounded-lg p-4 max-w-md max-h-48" id="stock-A">
                         <div class = "inline items-center justify-between">
                             <div class = "flex flex-row ml-2 mt-4">
-                                <h2 class="font-bold text-lg w-24 mx-2">MSFT</h2>
-                                <h5 class="text-md mx-2">Shares: 0</h5>
+                                <h2 class="font-bold text-lg w-24 mx-2" id="stock1-symb"></h2>
+                                <h5 class="text-md mx-2" id ="shares-display1">Shares: <span id="shares-display1-amt">{{ shares }}</span></h5>
                                 <h5 class="text-md mx-2" id="price-display1">Price: $<span id="price-display1-amt">0</span></h5>
-                                <h5 class="text-md mx-2" id="error-display1"></h5>
                             </div>
                             <!-- <span class="shares">$100.00</span> -->
                             <br>
                             <div class="flex align-center">
-                                <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset3"> 
+                                <input type="number" class="mt-4 mx-4 w-24 h-12 border border-gray-300 rounded-md p-1" placeholder="Quantity" name="asset1"> 
                                 <button class="btn btn--ripple2" id = "increase">Buy</button>
                                 <button class="btn btn--ripple"  id = "decrease">Sell</button>
                             </div>
+                            <h5 class="text-md mx-2" id="error-display1"></h5>
                         </div>
                     </div>
                     <div id="plotly-div1" class="bg-white shadow-lg rounded-lg w-64 h-auto"> <!-- Plotly chart will be inserted here --> </div>
@@ -109,9 +109,21 @@
         document.getElementById('switchDayButton').disabled = true;
         document.getElementById('switchDayButton').style.cursor = "not-allowed";
         document.getElementById('switchDayButton').style.opacity = "0.5";
-        let y_data_arr = {{ data|safe }};
+
+        document.getElementById('increase').disabled = false;
+        document.getElementById('increase').style.cursor = "pointer";
+        document.getElementById('increase').style.opacity = "1";
+
+        document.getElementById('decrease').disabled = false;
+        document.getElementById('decrease').style.cursor = "pointer";
+        document.getElementById('decrease').style.opacity = "1";
+
+        let y_data_arr_all = {{ big_data|safe }};
+        //console.log(y_data_arr_all);
+        let symb1 = y_data_arr_all[0][0]; // First asset's symb name
+        document.getElementById("stock1-symb").innerHTML = symb1; // update the html with the symb name
+        let y_data_arr = y_data_arr_all[0][1]; // First asset's data for all 5 days
         //console.log(y_data_arr);
-        const day_len = y_data_arr[0].length;
         let currentDay = 0;
         const totalDays = 5;
 
@@ -122,11 +134,13 @@
 
         // Function to run the graph for a single day
         function runGraph() {
+            // get the length of the data array for this day
+            const day_len = y_data_arr[currentDay].length;
 
             // Create initial chart canvas
             const chart1 = Highcharts.chart('plotly-div1', {
                 title: {
-                    text: 'MSFT'
+                    text: symb1
                 },
                 chart: {
                     type: 'line'
@@ -163,9 +177,17 @@
                     document.getElementById('switchDayButton').disabled = false;
                     document.getElementById('switchDayButton').style.cursor = "pointer";
                     document.getElementById('switchDayButton').style.opacity = "1";
+
+                    document.getElementById('increase').disabled = true;
+                    document.getElementById('increase').style.cursor = "not-allowed";
+                    document.getElementById('increase').style.opacity = "0.5";
+                    document.getElementById('decrease').disabled = true;
+                    document.getElementById('decrease').style.cursor = "not-allowed";
+                    document.getElementById('decrease').style.opacity = "0.5";
+
                 }
                 idx++;
-            }, 100); // Inteval length in ms. tweek to control the speed of the graph
+            }, 50); // Inteval length in ms. tweek to control the speed of the graph
         }
 
         // run the graph for the first day
@@ -179,7 +201,13 @@
                 let displayDay = currentDay + 1;
                 document.getElementById("day-display").innerHTML = "Day " + displayDay.toString();
 
-        
+                document.getElementById('increase').disabled = false;
+                document.getElementById('increase').style.cursor = "pointer";
+                document.getElementById('increase').style.opacity = "1";
+                document.getElementById('decrease').disabled = false;
+                document.getElementById('decrease').style.cursor = "pointer";
+                document.getElementById('decrease').style.opacity = "1";
+                
                 document.getElementById('switchDayButton').disabled = true;
                 document.getElementById('switchDayButton').style.cursor = "not-allowed";
                 document.getElementById('switchDayButton').style.opacity = "0.5";
@@ -193,10 +221,10 @@
         });
 
         // Function to buy stock
-        document.getElementById('increase').addEventListener('click', function() {
-            const curr_price = document.getElementById("price-display1-amt");
+        // document.getElementById('increase').addEventListener('click', function() {
+        //     const curr_price = document.getElementById("price-display1-amt");
 
-        });
+        // });
 
 
     </script>
@@ -204,8 +232,110 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/rippleButton.js"></script>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Welcome to Five Nights at Wall Street!</h2>
+            <br></br>
+            <h3>Starting the Game:</h3>
+            <ul>
+                <li>You begin with a virtual wallet filled with $10,000.</li>
+                <li>The game spans over five simulated days, representing five different stages of market scenarios.</li>
+            </ul>
+            <br></br>
+            <h3>How to Play:</h3>
+            <ul>
+                <li><strong>Monitor the Market:</strong> Observe the fluctuating stock chart for a selected stock. The chart updates in real-time, reflecting the simulated market's ups and downs.</li>
+                <li><strong>Buying Stocks:</strong> Enter the number of shares you want to purchase in the input box, then click "BUY" to execute the transaction. The cost of the purchase will be deducted from your wallet, and your share count will increase.</li>
+                <li><strong>Selling Stocks:</strong> Enter the number of shares you wish to sell, then click "SELL". The revenue from the sale will be added to your wallet, and your share count will decrease.</li>
+                <li><strong>Strategize:</strong> Aim to buy stocks when the prices dip and sell when they peak. Your goal is to increase your wallet balance and achieve the highest net gain possible.</li>
+                <li><strong>Advance the Game:</strong> Each day lasts until you decide to move on. When you're ready, click "Next Day" to see how the market evolves.</li>
+                <li><strong>Winning the Game:</strong> Your success is measured by your net gain at the end of the game. Manage your risks wisely and make your trades count!</li>
+            </ul>
+            <br></br>
+            <p>Remember, this simulation is a sprint, not a marathon. With only 30 seconds per day, quick thinking and decisive action are key. Can you outsmart the market and emerge wealthier?</p>
+            <p>Good luck, trader!</p>
+        </div>
+    </div>
+
+
+    <!-- Link to your custom JavaScript file -->
+    <script src="../static/js/modalLogic.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#increase").click(function(){
+                $.ajax({
+                    type: "POST", // or GET, depending on the request type
+                    url: "/buy", // the URL to which the request is sent
+
+                    data: { 
+                        wallet_amount: $('#wallet-amount').text(),
+                        shares: $('#shares-display1-amt').text(),
+                        quantity: $('input[name="asset1"]').val(),
+                        net_gain: $('#net-gain').text(),
+                        curr_price: $('#price-display1-amt').text() 
+                    }, // Data to be sent to the server
+                    success: function(response) {
+                        // Store the response in the shares display
+                        $('#wallet-amount').text(response.wallet);
+                        $('#shares-display1-amt').text(response.shares);
+                        $('#net-gain').text(response.net_gain);
+                    },
+                    error: function(xhr, status, error) {
+                        if(xhr.status === 400) {  // Checking for the 400 Bad Request error
+                            var errorMsg = JSON.parse(xhr.responseText).error;
+                            console.error(errorMsg);
+                            // alert(errorMsg);  // Display the error message from the server
+                            $('input[name="asset1"]').addClass('error-animation');  // Trigger visual feedback
+                            $('#error-display1').text(errorMsg);
+                        } else {
+                            console.error("An unexpected error occurred.");
+                        }
+                    }
+                });
+            });
+            $("#decrease").click(function(){
+                $.ajax({
+                    type: "POST", // or GET, depending on the request type
+                    url: "/sell", // the URL to which the request is sent
+
+                    data: { 
+                        wallet_amount: $('#wallet-amount').text(),
+                        shares: $('#shares-display1-amt').text(),
+                        quantity: $('input[name="asset1"]').val(),
+                        net_gain: $('#net-gain').text(),
+                        curr_price: $('#price-display1-amt').text() 
+                    }, // Data to be sent to the server
+                    success: function(response) {
+                        // Store the response in the shares display
+                        $('#wallet-amount').text(response.wallet);
+                        $('#shares-display1-amt').text(response.shares);
+                        $('#net-gain').text(response.net_gain);
+                    },
+                    error: function(xhr, status, error) {
+                        if(xhr.status === 400) {  // Checking for the 400 Bad Request error
+                            var errorMsg = JSON.parse(xhr.responseText).error;
+                            console.error(errorMsg);
+                            // alert(errorMsg);  // Display the error message from the server
+                            $('input[name="asset1"]').addClass('error-animation');  // Trigger visual feedback
+                            $('#error-display1').text(errorMsg);
+                        } else {
+                            console.error("An unexpected error occurred.");
+                        }
+                    }
+                });
+            });
+        });
+        $('input[name="asset1"]').on('input', function() {
+            $(this).removeClass('error-animation');
+            $('#error-display1').text('');
+        });
+        </script>
     
-    <footer>
+    <footer class = "text-center space-y-4 justify-between">
         <!-- Social Media Icons by NiftyButtons https://niftybuttons.com --><div style="display: flex; flex-wrap:wrap; align-items: center; justify-content: center;"><a href="true" target="_blank" rel="noopener noreferrer" style="text-decoration:none;border:0;width:37px;height:37px;padding:2px;margin:5px;color:#55828b;border-radius:35%;background-color:#364958;"><svg class="niftybutton-twitterx" style="display:block;fill:currentColor" data-donate="true" data-tag="twix" data-name="TwitterX" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><title>Twitter X social icon</title>
     <path d="M 304.757 216.824 L 495.394 0 L 450.238 0 L 284.636 188.227 L 152.475 0 L 0 0 L 199.902 284.656 L 0 512 L 45.16 512 L 219.923 313.186 L 359.525 512 L 512 512 M 61.456 33.322 L 130.835 33.322 L 450.203 480.317 L 380.811 480.317 "></path>
     </svg></a><a href="true" target="_blank" rel="noopener noreferrer" style="text-decoration:none;border:0;width:37px;height:37px;padding:2px;margin:5px;color:#55828b;border-radius:35%;background-color:#364958;"><svg class="niftybutton-instagram" style="display:block;fill:currentColor" data-donate="true" data-tag="ins" data-name="Instagram" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><title>Instagram social icon</title>
