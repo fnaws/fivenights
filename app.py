@@ -22,15 +22,20 @@ def index():
         outputsize='full',
         extended_hours='false'
     )
-    transformed_data = []
+    # transformed_data = m.day_data(month_data=data)
+    # print(transformed_data)
+    plotting_data = []
     # Transform the data to plot, x is the time, y is average of high and low
     for index, row in data.iterrows():
-        transformed_data.append({
+        plotting_data.append({
             'x': index,
             'y': np.mean([row['2. high'], row['3. low']])
         })
-    x_data = [entry['x'] for entry in transformed_data]
-    y_data = [entry['y'] for entry in transformed_data]
+    x_data = [entry['x'] for entry in plotting_data]
+    y_data = [entry['y'] for entry in plotting_data]
+
+    # for day in transformed_data:
+
 
     # Create a Plotly line chart
     trace = go.Scatter(
