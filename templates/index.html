@@ -102,6 +102,32 @@
         </div>
 
     </div>
+     <!-- Instructions Modal -->
+     <div id="instructionsModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="startGame">&times;</span>
+            <h2>Welcome to Five Nights at Wall Street!</h2>
+            <br></br>
+            <h3>Starting the Game:</h3>
+            <ul>
+                <li>You begin with a virtual wallet filled with $10,000.</li>
+                <li>The game spans over five simulated days, representing five different stages of market scenarios.</li>
+            </ul>
+            <br></br>
+            <h3>How to Play:</h3>
+            <ul>
+                <li><strong>Monitor the Market:</strong> Observe the fluctuating stock chart for a selected stock. The chart updates in real-time, reflecting the simulated market's ups and downs.</li>
+                <li><strong>Buying Stocks:</strong> Enter the number of shares you want to purchase in the input box, then click "BUY" to execute the transaction. The cost of the purchase will be deducted from your wallet, and your share count will increase.</li>
+                <li><strong>Selling Stocks:</strong> Enter the number of shares you wish to sell, then click "SELL". The revenue from the sale will be added to your wallet, and your share count will decrease.</li>
+                <li><strong>Strategize:</strong> Aim to buy stocks when the prices dip and sell when they peak. Your goal is to increase your wallet balance and achieve the highest net gain possible.</li>
+                <li><strong>Advance the Game:</strong> Each day lasts until you decide to move on. When you're ready, click "Next Day" to see how the market evolves.</li>
+                <li><strong>Winning the Game:</strong> Your success is measured by your net gain at the end of the game. Manage your risks wisely and make your trades count!</li>
+            </ul>
+            <br></br>
+            <p>Remember, this simulation is a sprint, not a marathon. With only 30 seconds per day, quick thinking and decisive action are key. Can you outsmart the market and emerge wealthier?</p>
+            <p>Good luck, trader!</p>
+        </div>
+    </div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script>
@@ -150,7 +176,24 @@
                         text: 'Timestamp'
                     },
                     min: 0,
-                    max: day_len
+                    max: day_len-1,
+                    categories: Array(day_len).fill(''), // Initialize all categories to empty strings
+                    labels: {
+                        formatter: function() {
+                            // Dynamically set labels for "9:30 AM", "1:00 PM", "4:00 PM"
+                            const labels = ['9:30 AM', '1:00 PM', '4:00 PM'];
+                            // Assuming day_len corresponds to the total number of minutes from 9:30 AM to 4:00 PM
+                            const positions = [0, Math.floor(day_len / 2), day_len-1]; // Adjust the middle position if necessary
+                            
+                            const index = positions.indexOf(this.pos);
+                            if (index !== -1) {
+                                return labels[index];
+                            }
+                            return '';
+                        }
+                    },
+                    tickPositions: [0, Math.floor(day_len / 2), day_len-1] // Ensure ticks only at these positions
+
                 },
                 yAxis: {
                     title: {
@@ -162,7 +205,19 @@
                 },
                 series: [{
                     data: []
-                }]
+                }],
+                tooltip: {
+                    enabled: false  // Enable tooltips
+                },
+                plotOptions: {
+                    series: {
+                        states: {
+                            hover: {
+                                enabled: false  // Disable hover effects initially
+                            }
+                        }
+                    }
+                }
             });
 
             // Update the chart at every interval
@@ -185,14 +240,29 @@
                     document.getElementById('decrease').style.cursor = "not-allowed";
                     document.getElementById('decrease').style.opacity = "0.5";
 
+                    chart1.update({
+                        tooltip: {
+                            enabled: true  // Enable tooltips
+                        },
+                        plotOptions: {
+                            series: {
+                                states: {
+                                    hover: {
+                                        enabled: true  // Disable hover effects initially
+                                    }
+                                }
+                            }
+                        }
+                    });
+
                 }
                 idx++;
             }, 75); // Inteval length in ms. tweek to control the speed of the graph
         }
 
         // run the graph for the first day
-        runGraph();
-
+        document.getElementById('startGame').addEventListener('click', runGraph);
+        
         // Function to switch to the next day and clear chart
         document.getElementById('switchDayButton').addEventListener('click', function() {
             if (currentDay < totalDays - 1) {
@@ -233,33 +303,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/rippleButton.js"></script>
 
-    <!-- Instructions Modal -->
-    <div id="instructionsModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Welcome to Five Nights at Wall Street!</h2>
-            <br></br>
-            <h3>Starting the Game:</h3>
-            <ul>
-                <li>You begin with a virtual wallet filled with $10,000.</li>
-                <li>The game spans over five simulated days, representing five different stages of market scenarios.</li>
-            </ul>
-            <br></br>
-            <h3>How to Play:</h3>
-            <ul>
-                <li><strong>Monitor the Market:</strong> Observe the fluctuating stock chart for a selected stock. The chart updates in real-time, reflecting the simulated market's ups and downs.</li>
-                <li><strong>Buying Stocks:</strong> Enter the number of shares you want to purchase in the input box, then click "BUY" to execute the transaction. The cost of the purchase will be deducted from your wallet, and your share count will increase.</li>
-                <li><strong>Selling Stocks:</strong> Enter the number of shares you wish to sell, then click "SELL". The revenue from the sale will be added to your wallet, and your share count will decrease.</li>
-                <li><strong>Strategize:</strong> Aim to buy stocks when the prices dip and sell when they peak. Your goal is to increase your wallet balance and achieve the highest net gain possible.</li>
-                <li><strong>Advance the Game:</strong> Each day lasts until you decide to move on. When you're ready, click "Next Day" to see how the market evolves.</li>
-                <li><strong>Winning the Game:</strong> Your success is measured by your net gain at the end of the game. Manage your risks wisely and make your trades count!</li>
-            </ul>
-            <br></br>
-            <p>Remember, this simulation is a sprint, not a marathon. With only 30 seconds per day, quick thinking and decisive action are key. Can you outsmart the market and emerge wealthier?</p>
-            <p>Good luck, trader!</p>
-        </div>
-    </div>
-
+   
 
     <!-- Link to your custom JavaScript file -->
     <script src="../static/js/modalLogic.js"></script>
