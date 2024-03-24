@@ -497,3 +497,20 @@ footer {
 .show {
   display: block;
 } 
+@keyframes pulseRed {
+  0% { border-color: red; }
+  50% { border-color: pink; }
+  100% { border-color: red; }
+}
+
+/* Shake */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.error-animation {
+  animation: pulseRed 1s infinite, shake 0.5s;
+}
