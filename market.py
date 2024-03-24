@@ -120,8 +120,7 @@ class Market:
                 avg_price = (entry['2. high'] + entry['3. low']) / 2
                 time_price.append(avg_price)
             ret.append(time_price[::-1])
-
-        return ret[::-1]
+        return five_days[0][0]['Unnamed: 0'].split(" ")[0], ret[::-1]
     
     def exception_handler(self):
         print('Entering exception handler')
@@ -145,7 +144,8 @@ class Market:
         except:
             print(f'Could not delete {symbol}/{month}')
         '''
-        return ret
+        
+        return month.split(".")[0], ret
 
     def _view(self, data, display='day'):
         # Ensure data is a pandas DataFrame

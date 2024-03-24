@@ -16,6 +16,7 @@ def index():
     global m
 
     big_data = []
+    first_day = None
     # Get the data from the API
 
     symbs = symbolator.get_random()
@@ -31,9 +32,10 @@ def index():
                 outputsize='full',
                 extended_hours='false'
             )
-            transformed_data = m.day_data(month_data=data)
+            first_day, transformed_data = m.day_data(month_data=data)
         except:
-            transformed_data = m.exception_handler()
+            first_day, transformed_data = m.exception_handler()
+            first_day += "-01"
 
         big_data.append([symb, transformed_data])
 
@@ -51,8 +53,16 @@ def index():
     shares = 0
     wallet = 10000.00
     net_gain = 0.00
+    
+    # Convert YYYY-MM-DD to string
+    # Example: 2023-09-01 -> September 1, 2023
+    try:
+        first_day = pd.to_datetime(first_day).strftime('%B %d, %Y')
+    except:
+        first_day = "\"could not fetch\""
+    
 
-    return render_template('index.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain)
+    return render_template('index.html', big_data=big_data, wallet=wallet, shares=shares, net_gain=net_gain, first_day=first_day)
 
 @app.route('/buy', methods=['POST'])
 def buy():
