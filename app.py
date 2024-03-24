@@ -67,7 +67,13 @@ def buy():
     wallet = float(wallet)
     shares = float(shares)
     net_gain = float(net_gain)
-    quantity = float(quantity)
+    try:
+        quantity = float(quantity)
+    except:
+        return jsonify({"error": "That's not a number"}), 400
+    #Verify quantity is a positive number
+    if quantity <= 0:
+        return jsonify({"error": "Quantity must be a non-zero positive number"}), 400
     curr_price = float(curr_price)
     wallet = wallet - (quantity * curr_price)
     shares = shares + quantity
@@ -99,7 +105,13 @@ def sell():
     wallet = float(wallet)
     shares = float(shares)
     net_gain = float(net_gain)
-    quantity = float(quantity)
+    try:
+        quantity = float(quantity)
+    except:
+        return jsonify({"error": "That's not a number"}), 400
+    #Verify quantity is a positive number
+    if quantity <= 0:
+        return jsonify({"error": "Quantity must be a non-zero positive number"}), 400
     curr_price = float(curr_price)
 
     wallet = wallet + (quantity * curr_price)
