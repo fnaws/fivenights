@@ -18,4 +18,6 @@ def get_random(n=2):
 def random_date():
     year = random.choice(range(2013, 2024))
     month = random.choice(range(1, 13))
+    if month < 10:
+        month = f'0{month}'
     return f'{year}-{month}'
